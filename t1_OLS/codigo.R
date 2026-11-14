@@ -41,19 +41,41 @@ ejercicio1 <- read_csv("ejercicio1.csv")
 #Compare ambos coeficientes de $X$ con el valor verdadero.
 
 #OLS en R no puede ser más sencillo, es simplemente usar la función lm()
+
 #caso 1 Estime $Y$ sobre $X$: Busca dejar en evidencia que una variable omitida 
 #en la regresión, produce un sesgo en el estimador de X, por lo tanto, no se puede
-#inferir causalidad de X sobre Y, dado que esta varianza es capturada por el error y por el estimador de X
+#inferir causalidad de X sobre Y, dado que esta varianza es capturada por el error
+#y por el estimador de X
 modelo1<-lm(Y~X, data=ejercicio1)
 summary(modelo1)
-# Beta del regresor X vale: 3.44611
+# Beta del regresor X vale: 3.55611 vs 2 (valor verdadero)
+
+#En econometría, la identificación responde a la pregunta: ¿Podemos recuperar el
+#parámetro causal verdadero (el efecto estructural que nos interesa) a partir
+#de los datos observacionales? en el modelo 1, no
+
 
 #caso 2: $Y$ sobre $X, W$
+#al encontrar la variable omitida -en este modelo sencillo- ya no quedan variables
+# fuera del modelo, por lo que el error deja de estar correlacionado con X y ya 
+# no tenemos sesgo por variable omitida
 
 modelo2<-lm(Y~X+W, data=ejercicio1)
 summary(modelo2)
 
+# Beta del regresor vale 2.00445 vs 2(valor verdadero)
+#esto deja en evidencia lo expresado anteriormente
 
+#c pide derivar sesgo poblacional, sencillo, hacerlo a mano calculando el plim
 
+#d Aca vamos a suponer que lo que observamos es X pero mal medido (con ruido)
+# además no lo dice el enunciado, pero vamos a suponer que W esta observado, asi
+#no acumulamos doble sesgo.
+#lo que debemos observar es sesgo de atenuación (derivar a mano el sesgo con plim)
+
+modelo3<-lm(Y~X_obs+W, data=ejercicio1)
+summary(modelo3)
+
+#estimador 0.97402 vs 2
 
 
