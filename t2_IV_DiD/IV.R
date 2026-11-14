@@ -55,12 +55,18 @@ summary(mod_IV)
 #segundo metodo RECOMENDADO
 library(AER)
 mod_IV2<-ivreg(Y~X| Z1, data = IV)
-summary(mod_IV2)
+summary(mod_IV2,diagnostics = TRUE)
 #1.99815  
 
 
 #caso 2 Z1 y Z2 instrumento
 #metodo directo
 mod_IV12<-ivreg(Y~X|Z1+Z2, data = IV)
-summary(mod_IV12)
+summary(mod_IV12,diagnostics = TRUE)
 # 2.01127 pequeño sesgo por el weak instrument
+#------------------------------------------------------------------------------#
+#control function
+V<-IV$X-X_hat #residuo
+mod_cf<-lm(Y~X+V,data = IV) #residuo como variable
+summary(mod_cf)
+#innecesario, ivreg ya lo hace y solo hace falta testear
